@@ -16,38 +16,40 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen flex flex-col">
           <Header />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/projects" element={
-              <ProtectedRoute>
-                <ProjectsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/projects/:projectId" element={
-              <ProtectedRoute>
-                <ProjectDetailPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/editor/:projectId/:stepNumber" element={
-              <ProtectedRoute>
-                <EditorPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            } />
-          </Routes>
+          <div className="flex-grow">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/projects" element={
+                <ProtectedRoute>
+                  <ProjectsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/projects/:projectId" element={
+                <ProtectedRoute>
+                  <ProjectDetailPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/editor/:projectId/:stepNumber" element={
+                <ProtectedRoute>
+                  <EditorPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </div>
         </div>
       </Router>
     </AuthProvider>
