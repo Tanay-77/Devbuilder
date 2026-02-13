@@ -30,7 +30,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [suggestions, setSuggestions] = useState<AutocompleteSuggestion[]>([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0);
   const [cursorContext, setCursorContext] = useState({ word: '', wordStart: 0, wordEnd: 0 });
-  
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const tabs = [
@@ -61,18 +61,18 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     const lines = textBeforeCursor.split('\n');
     const currentLine = lines.length - 1;
     const currentColumn = lines[lines.length - 1].length;
-    
+
     // Approximate character dimensions
     const charWidth = 8; // Approximate width of a character in monospace font
     const lineHeight = 20; // Approximate line height
-    
+
     const rect = textarea.getBoundingClientRect();
     const scrollTop = textarea.scrollTop;
     const scrollLeft = textarea.scrollLeft;
-    
+
     const top = rect.top + (currentLine * lineHeight) - scrollTop + lineHeight + 5;
     const left = rect.left + (currentColumn * charWidth) - scrollLeft;
-    
+
     return { top, left };
   };
 
@@ -80,13 +80,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     const cursorPosition = e.target.selectionStart;
-    
+
     handleChange(value);
-    
+
     // Get context at cursor
     const context = getCursorContext(value, cursorPosition);
     setCursorContext(context);
-    
+
     // Show autocomplete if user is typing a word
     if (context.word.length > 0) {
       const allCode = { html, css, javascript };
@@ -96,14 +96,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
         case 'css': allCode.css = value; break;
         case 'javascript': allCode.javascript = value; break;
       }
-      
+
       const newSuggestions = getSuggestions(activeTab, context.word, allCode);
-      
+
       if (newSuggestions.length > 0) {
         setSuggestions(newSuggestions);
         setSelectedSuggestionIndex(0);
         setShowAutocomplete(true);
-        
+
         // Calculate position for dropdown
         const position = calculateDropdownPosition(e.target, cursorPosition);
         setAutocompletePosition(position);
@@ -118,22 +118,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // Handle keyboard navigation in autocomplete
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (!showAutocomplete) return;
-    
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => 
+        setSelectedSuggestionIndex(prev =>
           prev < suggestions.length - 1 ? prev + 1 : 0
         );
         break;
-        
+
       case 'ArrowUp':
         e.preventDefault();
-        setSelectedSuggestionIndex(prev => 
+        setSelectedSuggestionIndex(prev =>
           prev > 0 ? prev - 1 : suggestions.length - 1
         );
         break;
-        
+
       case 'Enter':
       case 'Tab':
         if (suggestions[selectedSuggestionIndex]) {
@@ -141,7 +141,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           handleSuggestionSelect(suggestions[selectedSuggestionIndex]);
         }
         break;
-        
+
       case 'Escape':
         e.preventDefault();
         setShowAutocomplete(false);
@@ -152,22 +152,22 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   // Handle suggestion selection
   const handleSuggestionSelect = (suggestion: AutocompleteSuggestion) => {
     if (!textareaRef.current) return;
-    
+
     const textarea = textareaRef.current;
     const currentValue = getCurrentValue();
     const cursorPosition = textarea.selectionStart;
-    
+
     // Replace the current word with the suggestion
     const beforeWord = currentValue.substring(0, cursorContext.wordStart);
     const afterWord = currentValue.substring(cursorContext.wordEnd);
     const insertText = suggestion.insertText || suggestion.text;
-    
+
     const newValue = beforeWord + insertText + afterWord;
     const newCursorPosition = cursorContext.wordStart + insertText.length;
-    
+
     handleChange(newValue);
     setShowAutocomplete(false);
-    
+
     // Set cursor position after the inserted text
     setTimeout(() => {
       if (textareaRef.current) {
@@ -186,7 +186,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Don't trigger on special keys
     if (e.ctrlKey || e.altKey || e.metaKey) return;
-    
+
     // Trigger autocomplete for any letter, number, or certain symbols
     const char = e.key;
     if (/[a-zA-Z0-9_$-]/.test(char) && char.length === 1) {
@@ -196,17 +196,17 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           const value = textareaRef.current.value;
           const cursorPosition = textareaRef.current.selectionStart;
           const context = getCursorContext(value, cursorPosition);
-          
+
           if (context.word.length >= 1) {
             const allCode = { html, css, javascript };
             const newSuggestions = getSuggestions(activeTab, context.word, allCode);
-            
+
             if (newSuggestions.length > 0) {
               setSuggestions(newSuggestions);
               setSelectedSuggestionIndex(0);
               setCursorContext(context);
               setShowAutocomplete(true);
-              
+
               const position = calculateDropdownPosition(textareaRef.current!, cursorPosition);
               setAutocompletePosition(position);
             }
@@ -218,40 +218,39 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
   return (
     <div className="h-full flex flex-col bg-gray-900 text-white relative">
-      <div className="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
-        <div className="flex space-x-1">
+      <div className="flex items-center justify-between p-3 bg-gray-900 border-b-2 border-black">
+        <div className="flex space-x-2">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === tab.id
-                  ? 'bg-gray-700 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-700'
-              }`}
+              className={`px-4 py-2 text-sm font-bold border-2 transition-all duration-200 uppercase tracking-wide ${activeTab === tab.id
+                  ? 'bg-retro-yellow text-black border-black shadow-hard-sm translate-x-[1px] translate-y-[1px]'
+                  : 'bg-gray-800 text-gray-400 border-gray-700 hover:border-gray-500 hover:text-white'
+                }`}
             >
-              <span className={tab.color}>{tab.label}</span>
+              {tab.label}
             </button>
           ))}
         </div>
-        
-        <div className="flex items-center space-x-2">
-          <div className="flex items-center text-xs text-gray-400 mr-2">
+
+        <div className="flex items-center space-x-3">
+          <div className="hidden lg:flex items-center text-xs font-bold text-gray-500 mr-2 uppercase tracking-wide">
             <Lightbulb className="h-3 w-3 mr-1" />
             <span>Type to see suggestions</span>
           </div>
           <button
             onClick={onReset}
-            className="p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-md transition-colors"
+            className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 border-2 border-transparent hover:border-gray-600 transition-colors"
             title="Reset Code"
           >
             <RotateCcw className="h-4 w-4" />
           </button>
           <button
             onClick={onRun}
-            className="flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+            className="flex items-center px-4 py-2 bg-green-500 text-black font-black border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all duration-200 uppercase tracking-wider text-sm"
           >
-            <Play className="h-4 w-4 mr-1" />
+            <Play className="h-4 w-4 mr-2 fill-current" />
             Run
           </button>
         </div>
@@ -271,7 +270,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           autoCorrect="off"
           autoCapitalize="off"
         />
-        
+
         {/* Autocomplete Dropdown */}
         {showAutocomplete && (
           <AutocompleteDropdown

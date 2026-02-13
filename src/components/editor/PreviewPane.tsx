@@ -61,16 +61,16 @@ const PreviewPane: React.FC<PreviewPaneProps> = ({ html, css, javascript }) => {
 
   return (
     <div className="h-full flex flex-col bg-white">
-      <div className="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-200">
+      <div className="flex items-center justify-between p-3 bg-white border-b-2 border-black h-[60px]">
         <div className="flex items-center space-x-2">
-          <Eye className="h-4 w-4 text-gray-600" />
-          <span className="text-sm font-medium text-gray-700">Live Preview</span>
+          <Eye className="h-5 w-5 text-black" />
+          <span className="text-sm font-black text-black uppercase tracking-wider">Live Preview</span>
         </div>
-        <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-200 rounded-md transition-colors">
+        <button className="p-2 text-black hover:bg-retro-yellow border-2 border-transparent hover:border-black transition-all">
           <ExternalLink className="h-4 w-4" />
         </button>
       </div>
-      
+
       <div className="flex-1">
         <iframe
           ref={iframeRef}

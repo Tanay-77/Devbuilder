@@ -16,11 +16,11 @@ const EditorPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { updateProgress, completeProject } = useProgress();
-  
+
   const project = projects.find(p => p.id === projectId);
   const currentStepIndex = parseInt(stepNumber || '1') - 1;
   const currentStep = project?.steps[currentStepIndex];
-  
+
   const [html, setHtml] = useState('');
   const [css, setCss] = useState('');
   const [javascript, setJavascript] = useState('');
@@ -42,7 +42,7 @@ const EditorPage: React.FC = () => {
       try {
         // Try to load saved code first
         const savedCode = await getStepCode(user.id, projectId!, currentStep.id);
-        
+
         if (savedCode) {
           setHtml(savedCode.html);
           setCss(savedCode.css);
@@ -70,7 +70,7 @@ const EditorPage: React.FC = () => {
   // Validation function for different steps
   const validateStep = (stepId: string, html: string, css: string, javascript: string): string[] => {
     const errors: string[] = [];
-    
+
     switch (stepId) {
       case 'step-1':
         if (!html.includes('<!DOCTYPE html>')) {
@@ -101,7 +101,7 @@ const EditorPage: React.FC = () => {
           errors.push('Missing <footer> element');
         }
         break;
-        
+
       case 'step-2':
         if (!html.includes('<nav>')) {
           errors.push('Missing <nav> element inside header');
@@ -120,7 +120,7 @@ const EditorPage: React.FC = () => {
           errors.push('Missing name/logo in header (use <h1> element)');
         }
         break;
-        
+
       case 'step-3':
         if (!html.includes('class="hero"')) {
           errors.push('Missing section with class="hero"');
@@ -143,7 +143,7 @@ const EditorPage: React.FC = () => {
           errors.push('Hero section not found or incorrectly structured');
         }
         break;
-        
+
       default:
         // For JavaScript counter project and other steps
         if (stepId.includes('step-1') && projectId === 'number-counter') {
@@ -205,7 +205,7 @@ const EditorPage: React.FC = () => {
           }
         }
     }
-    
+
     return errors;
   };
 
@@ -230,37 +230,37 @@ const EditorPage: React.FC = () => {
       setValidationErrors(['Please log in to save your progress.']);
       return;
     }
-    
+
     setIsValidating(true);
     setValidationErrors([]);
-    
+
     try {
       // Validate the current step
       const errors = validateStep(currentStep.id, html, css, javascript);
-      
+
       if (errors.length > 0) {
         setValidationErrors(errors);
         setShowHints(true);
         setIsValidating(false);
         return;
       }
-      
+
       // If validation passes, update progress
       console.log('Submitting step:', { projectId, stepId: currentStep.id, userId: user.id });
       await updateProgress(projectId!, currentStep.id, { html, css, javascript });
-      
+
       // Check if this is the last step
       const nextStepNumber = currentStepIndex + 2;
       const isLastStep = nextStepNumber > project.steps.length;
-      
+
       if (isLastStep) {
         // Mark project as completed
         await completeProject(projectId!);
         setIsProjectComplete(true);
-        
+
         // Show success modal first, then trigger confetti
         setShowSuccessModal(true);
-        
+
         // Trigger project completion celebration after a short delay
         setTimeout(async () => {
           console.log('🎉 Triggering project completion celebration!');
@@ -273,7 +273,7 @@ const EditorPage: React.FC = () => {
       } else {
         // Show success modal first, then trigger confetti
         setShowSuccessModal(true);
-        
+
         // Trigger step completion confetti after a short delay
         setTimeout(async () => {
           console.log('🎊 Triggering step completion confetti!');
@@ -284,10 +284,10 @@ const EditorPage: React.FC = () => {
           }
         }, 1500);
       }
-      
+
     } catch (error) {
       console.error('Error submitting step:', error);
-      
+
       // Provide more helpful error messages
       if (error instanceof Error) {
         if (error.message.includes('permission-denied')) {
@@ -309,7 +309,7 @@ const EditorPage: React.FC = () => {
 
   const handleSuccessModalContinue = () => {
     setShowSuccessModal(false);
-    
+
     if (isProjectComplete) {
       // Navigate to project detail page
       navigate(`/projects/${projectId}`);
@@ -337,21 +337,23 @@ const EditorPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      <header className="bg-white border-b border-gray-200 px-4 py-3">
+    <div className="h-screen flex flex-col bg-retro-white">
+      <header className="bg-white border-b-2 border-black px-4 py-3 sticky top-0 z-10">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate(`/projects/${projectId}`)}
-              className="text-gray-600 hover:text-gray-800"
+              className="flex items-center text-black font-bold hover:text-gray-600 transition-colors group"
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
+              <span className="hidden sm:inline">Back to Project</span>
             </button>
+            <div className="h-8 w-0.5 bg-black mx-4 hidden sm:block"></div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">
+              <h1 className="text-xl font-black text-black tracking-tight">
                 {project.title}
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs font-bold text-gray-600 uppercase tracking-wide">
                 Step {currentStepIndex + 1}: {currentStep.title}
               </p>
             </div>
@@ -359,8 +361,8 @@ const EditorPage: React.FC = () => {
         </div>
       </header>
 
-      <div className="flex-1 flex">
-        <div className="w-1/3 border-r border-gray-200">
+      <div className="flex-1 flex overflow-hidden">
+        <div className="w-1/3 border-r-2 border-black flex flex-col overflow-hidden bg-white">
           <StepInstructions
             step={currentStep}
             stepNumber={currentStepIndex + 1}
@@ -372,8 +374,8 @@ const EditorPage: React.FC = () => {
             onDismissHints={() => setShowHints(false)}
           />
         </div>
-        
-        <div className="w-1/3 border-r border-gray-200">
+
+        <div className="w-1/3 border-r-2 border-black flex flex-col overflow-hidden bg-gray-900">
           <CodeEditor
             html={html}
             css={css}
@@ -385,8 +387,8 @@ const EditorPage: React.FC = () => {
             onReset={handleReset}
           />
         </div>
-        
-        <div className="w-1/3">
+
+        <div className="w-1/3 flex flex-col overflow-hidden bg-white">
           <PreviewPane
             html={html}
             css={css}
