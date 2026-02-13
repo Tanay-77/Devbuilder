@@ -14,10 +14,10 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onSuccess, disa
     try {
       console.log('🔘 Google sign-in button clicked');
       setIsAttempting(true);
-      
+
       const success = await loginWithGoogle();
       console.log('📊 Google sign-in result:', success);
-      
+
       if (success && onSuccess) {
         onSuccess();
       }
@@ -36,7 +36,7 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onSuccess, disa
         type="button"
         onClick={handleGoogleSignIn}
         disabled={isButtonDisabled}
-        className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-md"
+        className="w-full flex items-center justify-center px-4 py-3 bg-white text-black font-bold border-2 border-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-hard"
       >
         <svg className="w-5 h-5 mr-3 flex-shrink-0" viewBox="0 0 24 24">
           <path
@@ -56,11 +56,11 @@ const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onSuccess, disa
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
           />
         </svg>
-        <span className="truncate">
+        <span className="truncate uppercase tracking-wide">
           {isAttempting ? 'Connecting...' : isLoading ? 'Signing in...' : 'Continue with Google'}
         </span>
       </button>
-      
+
       {/* Enhanced debug information */}
       {import.meta.env.DEV && (
         <div className="mt-3 p-3 bg-gray-50 rounded-lg text-xs space-y-1">

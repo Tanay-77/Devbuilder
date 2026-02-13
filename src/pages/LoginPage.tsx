@@ -14,21 +14,21 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
-      <header className="p-6">
+    <div className="min-h-screen bg-retro-white flex flex-col font-sans">
+      <header className="p-6 border-b-2 border-black bg-white">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <Code2 className="h-6 w-6 text-white" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="p-2 bg-retro-yellow border-2 border-black rounded-none shadow-hard-sm group-hover:translate-x-[1px] group-hover:translate-y-[1px] group-hover:shadow-none transition-all">
+              <Code2 className="h-6 w-6 text-black" />
             </div>
-            <span className="text-xl font-bold text-gray-900">DevBuilder</span>
+            <span className="text-2xl font-black text-black tracking-tight">DevBuilder</span>
           </Link>
-          
+
           <Link
             to="/"
-            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+            className="flex items-center text-black font-bold hover:text-gray-600 transition-colors group"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Home
           </Link>
         </div>
@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
         <LoginForm onSuccess={handleLoginSuccess} />
       </div>
 
-      <footer className="p-6 text-center text-gray-500 text-sm">
+      <footer className="p-6 text-center text-gray-800 font-bold text-sm border-t-2 border-black bg-white">
         <p>&copy; 2024 DevBuilder. All rights reserved.</p>
       </footer>
     </div>
