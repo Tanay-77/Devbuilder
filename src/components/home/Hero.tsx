@@ -8,26 +8,6 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative overflow-hidden bg-retro-white">
-      {/* Built with Bolt.new Badge - Styled Retro */}
-      <div className="absolute top-6 right-6 z-10">
-        <a
-          href="https://bolt.new"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group inline-flex items-center px-4 py-2 bg-white border-2 border-black rounded-none text-sm font-bold text-black shadow-hard hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-hard-sm transition-all duration-200"
-        >
-          <div className="flex items-center space-x-2">
-            <div className="w-5 h-5 bg-retro-yellow border border-black flex items-center justify-center">
-              <Zap className="h-3 w-3 text-black" />
-            </div>
-            <span className="font-bold">
-              Built with Bolt.new
-            </span>
-            <ExternalLink className="h-3 w-3 text-black group-hover:text-gray-600 transition-colors" />
-          </div>
-        </a>
-      </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center">
           <h1 className="text-5xl md:text-7xl font-black text-black mb-8 tracking-tighter">
