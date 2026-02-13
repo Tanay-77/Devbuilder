@@ -13,44 +13,44 @@ const ProjectLibrary: React.FC = () => {
 
   const filteredProjects = projects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase());
+      project.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesDifficulty = selectedDifficulty === 'All' || project.difficulty === selectedDifficulty;
     const matchesTechnology = selectedTechnology === 'All' || project.technologies.includes(selectedTechnology);
-    
+
     return matchesSearch && matchesDifficulty && matchesTechnology;
   });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Project Library</h1>
-        <p className="text-gray-600 text-lg">
+      <div className="mb-12">
+        <h1 className="text-4xl font-black text-black mb-4 tracking-tight">Project Library</h1>
+        <p className="text-gray-800 text-xl font-medium max-w-2xl">
           Choose from our curated collection of real-world projects designed to level up your development skills.
         </p>
       </div>
 
-      <div className="mb-8 space-y-4">
+      <div className="mb-12 space-y-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black h-5 w-5" />
           <input
             type="text"
             placeholder="Search projects..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-4 border-2 border-black rounded-none shadow-hard focus:ring-0 focus:shadow-hard-lg transition-all font-bold placeholder-gray-500"
           />
         </div>
 
-        <div className="flex flex-wrap gap-4">
-          <div className="flex items-center space-x-2">
-            <Filter className="h-5 w-5 text-gray-400" />
-            <span className="text-sm font-medium text-gray-700">Filters:</span>
+        <div className="flex flex-wrap gap-4 items-center">
+          <div className="flex items-center space-x-2 mr-2">
+            <Filter className="h-5 w-5 text-black" />
+            <span className="text-base font-bold text-black">Filters:</span>
           </div>
-          
+
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border-2 border-black rounded-none text-sm font-bold shadow-hard focus:ring-0 focus:shadow-hard-sm cursor-pointer"
           >
             {difficulties.map(difficulty => (
               <option key={difficulty} value={difficulty}>{difficulty}</option>
@@ -60,7 +60,7 @@ const ProjectLibrary: React.FC = () => {
           <select
             value={selectedTechnology}
             onChange={(e) => setSelectedTechnology(e.target.value)}
-            className="px-3 py-2 border border-gray-200 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 border-2 border-black rounded-none text-sm font-bold shadow-hard focus:ring-0 focus:shadow-hard-sm cursor-pointer"
           >
             {technologies.map(tech => (
               <option key={tech} value={tech}>{tech}</option>
@@ -69,22 +69,22 @@ const ProjectLibrary: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-12">
         {filteredProjects.map(project => (
           <ProjectCard key={project.id} project={project} />
         ))}
       </div>
 
       {filteredProjects.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No projects found matching your criteria.</p>
+        <div className="text-center py-12 card-retro border-dashed">
+          <p className="text-gray-800 text-lg font-bold">No projects found matching your criteria.</p>
           <button
             onClick={() => {
               setSearchTerm('');
               setSelectedDifficulty('All');
               setSelectedTechnology('All');
             }}
-            className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+            className="mt-4 text-black underline font-black hover:text-gray-600 decoration-2 underline-offset-4"
           >
             Clear filters
           </button>
